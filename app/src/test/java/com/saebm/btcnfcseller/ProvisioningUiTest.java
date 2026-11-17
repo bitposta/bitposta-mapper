@@ -27,11 +27,11 @@ public class ProvisioningUiTest {
         java.lang.reflect.Method response = MainActivity.class.getDeclaredMethod("lookupFinished", long.class, com.saebm.btcnfcseller.core.AddressTransport.Response.class);
         response.setAccessible(true);
         response.invoke(activity, ticket, new com.saebm.btcnfcseller.core.AddressTransport.Response(200,
-            "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://btc4.fun/s/26b1z00001\"}", null));
+            "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://bitposta.com/s/26b1z00001\"}", null));
         TextView mapping = activity.getWindow().getDecorView().findViewWithTag("provisionMapping");
         assertTrue(mapping.getText().toString().contains(ADDRESS));
         assertTrue(mapping.getText().toString().contains("00010203"));
-        assertTrue(mapping.getText().toString().contains("https://btc4.fun/s/26b1z00001"));
+        assertTrue(mapping.getText().toString().contains("https://bitposta.com/s/26b1z00001"));
         View arm = activity.getWindow().getDecorView().findViewWithTag("writeTag");
         assertTrue(arm.isEnabled()); arm.performClick();
         AlertDialog warning = ShadowAlertDialog.getLatestAlertDialog();
@@ -51,7 +51,7 @@ public class ProvisioningUiTest {
         assertEquals("IDLE", flow.state().toString());
         controller.resume();
         activity.lookupFinished(ticket, new com.saebm.btcnfcseller.core.AddressTransport.Response(200,
-            "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://btc4.fun/s/26b1z00001\"}", null));
+            "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://bitposta.com/s/26b1z00001\"}", null));
         assertFalse(activity.getWindow().getDecorView().findViewWithTag("writeTag").isEnabled());
     }
     @Test public void editedAddressCancelsPriorAuthority() throws Exception {
@@ -59,7 +59,7 @@ public class ProvisioningUiTest {
         java.lang.reflect.Field field = MainActivity.class.getDeclaredField("provisioning"); field.setAccessible(true);
         com.saebm.btcnfcseller.core.TagProvisioning flow = (com.saebm.btcnfcseller.core.TagProvisioning)field.get(activity);
         long ticket = flow.beginLookup("00010203", ADDRESS);
-        flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://btc4.fun/s/26b1z00001");
+        flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://bitposta.com/s/26b1z00001");
         ((android.widget.EditText) activity.getWindow().getDecorView().findViewWithTag("address")).setText(ADDRESS);
         assertEquals("IDLE", flow.state().toString());
     }
@@ -113,7 +113,7 @@ public class ProvisioningUiTest {
      * TagProvisioning through NdefPort's real byte encoding instead of asserting on source text.
      */
     @Test public void realNdefBytesDecideWhetherTheTagIsAccepted() throws Exception {
-        String url = "https://btc4.fun/s/26b1z00001";
+        String url = "https://bitposta.com/s/26b1z00001";
         byte[] written = (byte[]) NdefPort.class.getDeclaredMethod("uriMessage", String.class).invoke(null, url);
         com.saebm.btcnfcseller.core.TagProvisioning flow = new com.saebm.btcnfcseller.core.TagProvisioning();
         long ticket = flow.beginLookup("00010203", ADDRESS);
@@ -124,7 +124,7 @@ public class ProvisioningUiTest {
 
         // A different URL on the tag must never be accepted for lock.
         byte[] other = (byte[]) NdefPort.class.getDeclaredMethod("uriMessage", String.class)
-            .invoke(null, "https://btc4.fun/s/26b1z00002");
+            .invoke(null, "https://bitposta.com/s/26b1z00002");
         long lockTicket = flow.armLock();
         flow.discovered(lockTicket, new BytesPort("00010203", other, true));
         assertEquals("FAILED_UNKNOWN", flow.state().toString());
@@ -165,7 +165,7 @@ public class ProvisioningUiTest {
         long ticket = flow.beginLookup("00010203", ADDRESS);
         ((TextView)activity.getWindow().getDecorView().findViewWithTag("provisionStatus")).setText("waiting");
         activity.lookupFinished(ticket, new com.saebm.btcnfcseller.core.AddressTransport.Response(200,
-            "{\"address\":\"wrong\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://btc4.fun/s/26b1z00001\"}", null));
+            "{\"address\":\"wrong\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://bitposta.com/s/26b1z00001\"}", null));
         assertFalse(activity.getWindow().getDecorView().findViewWithTag("writeTag").isEnabled());
         assertNotEquals("waiting", ((TextView)activity.getWindow().getDecorView().findViewWithTag("provisionStatus")).getText().toString());
     }
@@ -175,7 +175,7 @@ public class ProvisioningUiTest {
         com.saebm.btcnfcseller.core.TagProvisioning flow = (com.saebm.btcnfcseller.core.TagProvisioning)field.get(activity);
         long ticket = flow.beginLookup("00010203", ADDRESS);
         activity.lookupFinished(ticket, new com.saebm.btcnfcseller.core.AddressTransport.Response(200,
-            "{\"address\":\"wrong\",\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://btc4.fun/s/26b1z00001\"}", null));
+            "{\"address\":\"wrong\",\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://bitposta.com/s/26b1z00001\"}", null));
         assertFalse(activity.getWindow().getDecorView().findViewWithTag("writeTag").isEnabled());
     }
     @Test public void editingOfflineAddressDoesNotRetireCaptureReaderGeneration() throws Exception {
@@ -200,7 +200,7 @@ public class ProvisioningUiTest {
         java.lang.reflect.Field field = MainActivity.class.getDeclaredField("provisioning"); field.setAccessible(true);
         com.saebm.btcnfcseller.core.TagProvisioning flow = (com.saebm.btcnfcseller.core.TagProvisioning)field.get(activity);
         long first = flow.beginLookup("00010203", ADDRESS);
-        String body = "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://btc4.fun/s/26b1z00001\"}";
+        String body = "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://bitposta.com/s/26b1z00001\"}";
         activity.lookupFinished(first, new com.saebm.btcnfcseller.core.AddressTransport.Response(200, body, null));
         activity.getWindow().getDecorView().findViewWithTag("writeTag").performClick();
         AlertDialog old = ShadowAlertDialog.getLatestAlertDialog();
@@ -214,7 +214,7 @@ public class ProvisioningUiTest {
         int requests;
         protected com.saebm.btcnfcseller.core.AddressTransport.Response requestLookup(com.saebm.btcnfcseller.core.AddressTransport request, String address) {
             requests++;
-            return new com.saebm.btcnfcseller.core.AddressTransport.Response(200, "{\"address\":\"" + address + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://btc4.fun/s/26b1z00001\"}", null);
+            return new com.saebm.btcnfcseller.core.AddressTransport.Response(200, "{\"address\":\"" + address + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://bitposta.com/s/26b1z00001\"}", null);
         }
     }
     @Test public void explicitSavedMappingConsentDispatchesExactlyOnce() throws Exception {
@@ -259,7 +259,7 @@ public class ProvisioningUiTest {
         String consentText = ((TextView)consent.findViewById(android.R.id.message)).getText().toString();
         assertTrue(consentText.contains("آدرس عمومی"));
         assertTrue(consentText.contains("https://btc.saeb.id.ir"));
-        assertFalse("Public website migration must not rewrite the backend contract", consentText.contains("https://btc4.fun"));
+        assertFalse("Public website migration must not rewrite the backend contract", consentText.contains("https://bitposta.com"));
         consent.getButton(AlertDialog.BUTTON_NEGATIVE).performClick();
         View arm = activity.getWindow().getDecorView().findViewWithTag("writeTag");
         assertNotNull(arm); assertFalse(arm.isEnabled());

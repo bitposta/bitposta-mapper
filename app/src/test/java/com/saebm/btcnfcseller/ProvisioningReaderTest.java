@@ -86,7 +86,7 @@ public class ProvisioningReaderTest {
     private void reviewMapping() {
         long ticket = flow.beginLookup("00010203", ADDRESS);
         activity.lookupFinished(ticket, new com.saebm.btcnfcseller.core.AddressTransport.Response(200,
-            "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://btc4.fun/s/26b1z00001\"}", null));
+            "{\"address\":\"" + ADDRESS + "\",\"serial\":\"26b1z00001\",\"lookup_url\":\"https://bitposta.com/s/26b1z00001\"}", null));
     }
     private static class MemoryTag implements TagProvisioning.Port {
         byte[] bytes;
@@ -256,7 +256,7 @@ public class ProvisioningReaderTest {
     @Test public void radioOffInvalidatesPendingLookupAndLateResponse() throws Exception {
         long ticket = flow.beginLookup("00010203", ADDRESS);
         radioEnabled(false); radioEnabled(true);
-        assertFalse(flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://btc4.fun/s/26b1z00001"));
+        assertFalse(flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://bitposta.com/s/26b1z00001"));
         assertCaptureOnly();
     }
     @Test public void radioOffDismissesReviewAndRejectsOldConsent() throws Exception {

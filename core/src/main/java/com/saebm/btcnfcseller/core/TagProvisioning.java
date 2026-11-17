@@ -128,7 +128,7 @@ public final class TagProvisioning {
             + "[0-9a-z][0-9ab][0-9a-u][0-9a-mz][0-9a-z][0-9a-z]+"
             + ")";
         if (!address.equals(returnedAddress) || returnedSerial == null || !returnedSerial.matches(pattern)
-                || !("https://btc4.fun/s/" + returnedSerial).equals(returnedUrl)) {
+                || !("https://bitposta.com/s/" + returnedSerial).equals(returnedUrl)) {
             state = State.FAILED_UNKNOWN;
             return false;
         }

@@ -89,13 +89,13 @@ maximum bytes = 1048576
 فقط پس از انتخاب رکورد ذخیره شده و تایید ارسال، یک درخواست با نشانی عمومی ارسال می شود؛ شناسه تگ در مسیر درخواست نیست. انتقال تولیدی از اعتماد گواهی سکوی اجرا و بررسی نام میزبان استفاده می کند. تغییر مسیر و تلاش مجدد خودکار پیاده نشده است؛ سقف کل درخواست ده ثانیه و بدنه سی و دو کیلوبایت است.
 
 ```text
-GET https://btc4.fun/api/addresses/<address>
+GET https://bitposta.com/api/addresses/<address>
 ```
 
 پاسخ موفق دقیقا سه کلید رشته ای زیر می خواهد. کلید اضافه، کلید تکراری، مقدار غیررشته ای یا محتوای بعد از شیء رد می شود. نشانی باید عینا همان رکورد انتخاب شده باشد. سریال با شکل های قدیمی و کوتاه تطبیق داده می شود؛ شکل معتبر اثبات صدور نیست. پیوند فقط شکل دقیق زیر را می پذیرد؛ دامنه جایگزین، پارامتر یا پیوند دلخواه پذیرفته نمی شود.
 
 ```json
-{"address":"<saved-address>","serial":"<validated-serial>","lookup_url":"https://btc4.fun/s/<validated-serial>"}
+{"address":"<saved-address>","serial":"<validated-serial>","lookup_url":"https://bitposta.com/s/<validated-serial>"}
 ```
 
 [Transport](../core/src/main/java/com/saebm/btcnfcseller/core/AddressTransport.java)
@@ -141,7 +141,7 @@ LOCK_AWAITING_VERIFICATION -> VERIFY_ARMED -> LOCKED_VERIFIED
 ```text
 JDK 17; Gradle wrapper 8.9; Android Gradle Plugin 8.7.0
 compileSdk=35; targetSdk=35; minSdk=26; build-tools=34.0.0
-applicationId=com.saebm.btcnfcseller; versionName=1.1.6; versionCode=11
+applicationId=com.saebm.btcnfcseller; versionName=1.1.7; versionCode=12
 ```
 
 فرمان های توسعه زیر از منبع و گردش کار استخراج شده اند و در این ماموریت اجرا نشده اند، چون خروجی ساخت موجود را تغییر می دهند. آماده بودن ابزار و وابستگی های محلی پیش نیاز است؛ ثبت آفلاین به معنی ساخت نخست بدون شبکه نیست. حالت آفلاین فقط در صورت وجود وابستگی های ذخیره شده قابل استفاده است.

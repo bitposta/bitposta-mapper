@@ -10,7 +10,7 @@ public final class AddressTransport {
     private final boolean tls;
     private volatile java.net.Socket active;
     private volatile boolean cancelled;
-    public AddressTransport() { this("btc4.fun", 443, true, 10000); }
+    public AddressTransport() { this("bitposta.com", 443, true, 10000); }
     AddressTransport(String host, int port, boolean tls, int timeout) {
         this.host = host; this.port = port; this.tls = tls; this.timeout = timeout;
     }

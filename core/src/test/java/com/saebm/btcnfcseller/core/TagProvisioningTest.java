@@ -12,13 +12,13 @@ public class TagProvisioningTest {
         catch (NoSuchMethodException e) { throw new AssertionError("Missing explicit lookup admission", e); }
         long ticket = (Long) begin.invoke(flow, "00010203", ADDRESS);
         flow.getClass().getMethod("completeLookup", long.class, String.class, String.class, String.class)
-            .invoke(flow, ticket, ADDRESS, "26b1z00001", "https://btc4.fun/s/26b1z00001");
+            .invoke(flow, ticket, ADDRESS, "26b1z00001", "https://bitposta.com/s/26b1z00001");
         assertEquals("REVIEW", flow.state().toString());
     }
     @Test public void explicitWriteRequiresConsentThenMatchingFreshTag() throws Exception {
         TagProvisioning flow = new TagProvisioning();
         long ticket = flow.beginLookup("00010203", ADDRESS);
-        flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://btc4.fun/s/26b1z00001");
+        flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://bitposta.com/s/26b1z00001");
         try { flow.getClass().getMethod("armWrite").invoke(flow); }
         catch (NoSuchMethodException e) { throw new AssertionError("No explicit write consent", e); }
         assertEquals("WRITE_ARMED", flow.state().toString());
@@ -45,7 +45,7 @@ public class TagProvisioningTest {
     private TagProvisioning reviewed() {
         TagProvisioning flow = new TagProvisioning();
         long ticket = flow.beginLookup("00010203", ADDRESS);
-        assertTrue(flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://btc4.fun/s/26b1z00001"));
+        assertTrue(flow.completeLookup(ticket, ADDRESS, "26b1z00001", "https://bitposta.com/s/26b1z00001"));
         return flow;
     }
     @Test public void writesOnceAndReadsBackWithoutLocking() {
@@ -111,26 +111,26 @@ public class TagProvisioningTest {
         long ticket = flow.armWrite(); flow.cancel(); flow.discovered(ticket, tag);
         assertEquals(0, tag.connects); assertEquals(0, tag.writes);
         long lookup = flow.beginLookup("00010203", ADDRESS); flow.cancel();
-        assertFalse(flow.completeLookup(lookup, ADDRESS, "26b1z00001", "https://btc4.fun/s/26b1z00001"));
+        assertFalse(flow.completeLookup(lookup, ADDRESS, "26b1z00001", "https://bitposta.com/s/26b1z00001"));
     }
     @Test public void shortAndLegacySerialShapesAreBothAccepted() {
         for (String serial : new String[]{"6a6dk0", "6a6dkz", "26b1z00001"}) {
             TagProvisioning flow = new TagProvisioning();
             long ticket = flow.beginLookup("00010203", ADDRESS);
-            assertTrue(serial, flow.completeLookup(ticket, ADDRESS, serial, "https://btc4.fun/s/" + serial));
+            assertTrue(serial, flow.completeLookup(ticket, ADDRESS, serial, "https://bitposta.com/s/" + serial));
         }
         for (String serial : new String[]{"6a6d", "6A6dk0"}) {
             TagProvisioning flow = new TagProvisioning();
             long ticket = flow.beginLookup("00010203", ADDRESS);
-            assertFalse(serial, flow.completeLookup(ticket, ADDRESS, serial, "https://btc4.fun/s/" + serial));
+            assertFalse(serial, flow.completeLookup(ticket, ADDRESS, serial, "https://bitposta.com/s/" + serial));
         }
     }
     @Test public void invalidServerMappingFailsClosed() {
-        String[][] cases = {{"other", "26b1z00001", "https://btc4.fun/s/26b1z00001"},
-            {ADDRESS, "../bad", "https://btc4.fun/s/../bad"},
+        String[][] cases = {{"other", "26b1z00001", "https://bitposta.com/s/26b1z00001"},
+            {ADDRESS, "../bad", "https://bitposta.com/s/../bad"},
             {ADDRESS, "26b1z00001", "https://evil.invalid/s/26b1z00001"},
-            {ADDRESS, "26b1z00001", "https://btc4.fun/s/26b1z00001?x=1"},
-            {ADDRESS, "26b1z00001", "http://btc4.fun/s/26b1z00001"}};
+            {ADDRESS, "26b1z00001", "https://bitposta.com/s/26b1z00001?x=1"},
+            {ADDRESS, "26b1z00001", "http://bitposta.com/s/26b1z00001"}};
         for (String[] values : cases) {
             TagProvisioning flow = new TagProvisioning(); long ticket = flow.beginLookup("00010203", ADDRESS);
             assertFalse(flow.completeLookup(ticket, values[0], values[1], values[2]));
